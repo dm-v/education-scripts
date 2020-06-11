@@ -12,6 +12,7 @@ from xmodule.modulestore.django import modulestore
 
 
 csv_result_dir = '/tmp/result/'
+current_course_id_file = '/tmp/course.id.log'
 
 
 def write_row(num, chapter_block, seq_block, vert_block, item, grading_policy, csv_writer):
@@ -92,22 +93,16 @@ def create_course_csv(course_id, csv_writer):
                         num = num + 1
 
 
-all_courses = modulestore().get_courses()
-for course in all_courses:
-    run = str(course.location.run)
-    course_id = str(course.id)
-    if '2018' in run or '2019' in run or '2020' in run:
-        csv_file_name = csv_result_dir + course_id.split(':')[1].replace('+', '_') + '.csv'
+f1 = open(current_course_id_file, 'r')
+course_id = f1.read()
+f1.close()
 
-        if not os.path.isfile(csv_file_name):
-            try:
-                with open(csv_file_name, 'w') as f:
-                    csv_writer = csv.writer(f, delimiter=';')
-                    print 'Create CSV for course: ', course_id
-                    create_course_csv(course_id, csv_writer)
-            except:
-                os.remove(csv_file_name)
-                raise
-        else:
-            print 'Skip course: ', course_id
-
+csv_file_name = csv_result_dir + course_id.split(':')[1].replace('+', '_') + '.csv'
+try:
+    with open(csv_file_name, 'w') as f2:
+        csv_writer = csv.writer(f2, delimiter=';')
+        print 'Create CSV for course: ', course_id
+        create_course_csv(course_id, csv_writer)
+except:
+    os.remove(csv_file_name)
+    raise
