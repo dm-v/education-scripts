@@ -95,7 +95,7 @@ for course in all_courses:
 
         if not os.path.isfile(csv_file_name):
             try:
-                with open(csv_file_name, 'w') as f:
+                with open(csv_file_name, 'w', encoding='utf8') as f:
                     csv_writer = csv.writer(f, delimiter=';')
                     print 'Create CSV for course: ', course_id
                     create_course_csv(course_id, csv_writer)
