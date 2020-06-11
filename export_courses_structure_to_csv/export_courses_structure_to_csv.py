@@ -97,6 +97,8 @@ f1 = open(current_course_id_file, 'r')
 course_id = f1.read()
 f1.close()
 
+course_id = course_id.strip()
+
 csv_file_name = csv_result_dir + course_id.split(':')[1].replace('+', '_') + '.csv'
 try:
     with open(csv_file_name, 'w') as f2:
