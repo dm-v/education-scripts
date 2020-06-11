@@ -2,6 +2,10 @@
 
 import csv
 import os
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 from opaque_keys.edx.keys import CourseKey
 from xmodule.modulestore.django import modulestore
@@ -28,10 +32,10 @@ def write_row(num, chapter_block, seq_block, vert_block, item, grading_policy, c
             str(seq_block.location),
             str(chapter_block.location),
             str(item.category),
-            unicode(item.display_name).encode("utf-8") if item.display_name else '',
-            unicode(vert_block.display_name).encode("utf-8") if vert_block.display_name else '',
-            unicode(seq_block.display_name).encode("utf-8") if seq_block.display_name else '',
-            unicode(chapter_block.display_name).encode("utf-8") if chapter_block.display_name else '',
+            item.display_name.encode("utf-8") if item.display_name else '',
+            vert_block.display_name.encode("utf-8") if vert_block.display_name else '',
+            seq_block.display_name.encode("utf-8") if seq_block.display_name else '',
+            chapter_block.display_name.encode("utf-8") if chapter_block.display_name else '',
             visible,
             graded,
             grading_type,
@@ -41,7 +45,7 @@ def write_row(num, chapter_block, seq_block, vert_block, item, grading_policy, c
             is_proctored_exam
         ])
     except:
-        print item.display_name, vert_block.display_name, seq_block.display_name, chapter_block.display_name
+        print 'Error: ', item.display_name, '|', vert_block.display_name, '|', seq_block.display_name, '|', chapter_block.display_name
         raise
 
 
